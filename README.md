@@ -1,2 +1,3 @@
-# dynstudio
-Restful exstensible configuration deployment application
+# DynStudio
+A Restful Exstensible Configuration Deployment Application
+
