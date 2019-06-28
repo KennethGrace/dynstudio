@@ -14,8 +14,11 @@ class CiscoUCS(Host):
         self.handler = UcsHandle(self.name, user, password)
         self.handler.login()
 
-    def removeVlans(self, vlans):
-        pass
+    def removeVlansFromVlanGroup(self, vlans):
+        if not isinstance(var, list):
+            vlans = [vlans]
+        for vlan in vlans:
+            
 
     def queryH(self, dn):
         obj_list = self.handler.query_dn(dn, hierarchy=True)
@@ -35,3 +38,10 @@ class CiscoUCS(Host):
 
     def disconnect(self):
         self.handler.logout()
+
+class VlanGroup():
+    def __init__(self, ):
+        pass
+
+    @classmethod
+    def initFromObj():

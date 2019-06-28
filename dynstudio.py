@@ -14,8 +14,8 @@ def hand_off(key):
 
 def main(*args, **kwargs):
     print(args)
-    cisco_ucs_host = cisco_ucs.CiscoUCS('10.114.27.60')
-    cisco_ucs_host.connect('admin', 'Dyntek1@3')
+    cisco_ucs_host = cisco_ucs.CiscoUCS('172.27.0.1')
+    cisco_ucs_host.connect('var1', 'var2')
     cisco_ucs_host.queryH('fabric/lan/net-group-ACI-PCI')
     print(cisco_ucs_host)
     #print(json.dumps(r, indent=2))
