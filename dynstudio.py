@@ -1,9 +1,11 @@
 #! /usr/bin/python
 import sys
+import json
+
 import exception as ex
 
-import modules.host
-import modules.cisco
+import host
+from modules.cisco import cisco_ucs
 
 min_args = 2
 
@@ -12,9 +14,11 @@ def hand_off(key):
 
 def main(*args, **kwargs):
     print(args)
-    host = modules.host.Host('10.215.27.1')
-    cisco_host = modules.cisco.cisco_ucs.CiscoUCS('10.215.27.1')
-    pass
+    cisco_ucs_host = cisco_ucs.CiscoUCS('10.114.27.60')
+    cisco_ucs_host.connect('admin', 'Dyntek1@3')
+    cisco_ucs_host.queryH('fabric/lan/net-group-ACI-PCI')
+    print(cisco_ucs_host)
+    #print(json.dumps(r, indent=2))
 
 if __name__ == '__main__':
     if len(sys.argv) >= min_args:
