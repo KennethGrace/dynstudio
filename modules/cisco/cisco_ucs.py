@@ -14,12 +14,6 @@ class CiscoUCS(Host):
         self.handler = UcsHandle(self.name, user, password)
         self.handler.login()
 
-    def removeVlansFromVlanGroup(self, vlans):
-        if not isinstance(var, list):
-            vlans = [vlans]
-        for vlan in vlans:
-            
-
     def queryH(self, dn):
         obj_list = self.handler.query_dn(dn, hierarchy=True)
         for obj in obj_list:
@@ -40,8 +34,16 @@ class CiscoUCS(Host):
         self.handler.logout()
 
 class VlanGroup():
-    def __init__(self, ):
-        pass
+    vlans = []
+    def __init__(self, name):
+        self.name = name
+        self.dn = 'fabric/lan/net-group-{}'.format(name)
+        # TODO: Init Vlans List
+
+    def removeVlan(self, handler, id):
+        handler.query_dn(self.name)
+        handler.remove_mo()
 
     @classmethod
-    def initFromObj():
+    def initFromObj(self, obj):
+        pass
