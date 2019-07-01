@@ -39,18 +39,43 @@ class Lan():
     vlans = {}
     def __init__(self, host):
         self.host = host
-        self.dn = 'fabric/lan'
+        self.mo = self.host.handler.query_dn('fabric/lan')
+        print(self.mo)
         self._discoverFabric()
 
     def _discoverFabric(self):
         # Query the Fabric/Lan Tree for all child objects
-        objs = self.host.handler.query_dn(self.dn, hierarchy=True)
+        objs = self.host.query(self.mo.dn, hierarchy=True)
         # Parse the Fabric/Lan Tree into native objects
         for obj in objs:
             if obj._class_id == 'FabricVlan':
                 self.vlans.update({obj.name: Vlan(self, obj.name, mo=obj)})
             elif obj._class_id == 'FabricNetGroup':
                 self.vlanGroups.update({obj.name: VlanGroup(self, obj.name, mo=obj)})
+
+    def createVlan(self, name, id):
+        """ Difine and create a new VLAN on the UCS fabric
+        """
+        from ucsmsdk.mometa.fabric.FabricVlan import FabricVlan
+        mo = FabricVlan(parent_mo_or_dn=self.mo,name=name,id=id)
+        self.host.add(mo)
+        self.vlans.update({name: Vlan(self, name, mo=mo)})
+        return mo
+
+    def removeVlansByID(self, id):
+        for vlan in self.vlans.values():
+            if vlan.mo.id == id:
+                self.host.remove(vlan.mo)
+                del self.vlans[vlan.name]
+
+    def removeVlan(self, name):
+        """ Strip the UCS Fabric of the vlan instance which matches passed name
+        """
+        t_vlan = self.vlans[name]
+        self.host.remove(t_vlan.mo)
+        del self.vlans[name]
+
+    
 
 class VlanGroup():
     groupVlans = []
@@ -63,7 +88,7 @@ class VlanGroup():
         # Init Vlans List
         self.groupVlans = self.lan.host.query(self.mo.dn, hierarchy=True)
 
-    def removeVlanByID(self, id):
+    def removeVlansByID(self, id):
         """ Strips the Vlan Group of all instances of the passed Vlan ID
         """
         for vlan in self.lan.vlans.values():
@@ -79,7 +104,7 @@ class VlanGroup():
                 if groupVlan.name == t_vlan.mo.name:
                     self.lan.host.remove(groupVlan)
 
-    def addVlanByID(self, id):
+    def addVlansByID(self, id):
         """ Appends the Vlan Group with all instances of the passed Vlan ID
         """
         from ucsmsdk.mometa.fabric.FabricPooledVlan import FabricPooledVlan
