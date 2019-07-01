@@ -13,37 +13,75 @@ class CiscoUCS(Host):
     def connect(self, user, password):
         self.handler = UcsHandle(self.name, user, password)
         self.handler.login()
+        self.difLAN()
 
-    def queryH(self, dn):
-        obj_list = self.handler.query_dn(dn, hierarchy=True)
-        for obj in obj_list:
-            print(obj)
+    def difLAN(self):
+        self.lan = Lan(self)
 
-    def query(self, dn):
-        obj = self.handler.query_dn(dn)
-        print(obj)
+    def query(self, dn, hierarchy=False):
+        obj = self.handler.query_dn(dn, hierarchy=hierarchy)
+        return obj
 
-    def remove(self, dn):
-        obj = self.handler.query_dn(dn)
-        try:
-            self.handler.remove_mo(obj)
-        except:
-            print("OBJ Not Defined")
+    def add(self, obj):
+        self.handler.add_mo(obj, modify_present=True)
+
+    def remove(self, obj):
+        self.handler.remove_mo(obj)
+
+    def commit(self):
+        self.handler.commit()
 
     def disconnect(self):
         self.handler.logout()
 
+class Lan():
+    vlanGroups = {}
+    vlans = {}
+    def __init__(self, host):
+        self.host = host
+        self.dn = 'fabric/lan'
+        self._discoverFabric()
+
+    def _discoverFabric(self):
+        # Query the Fabric/Lan Tree for all child objects
+        objs = self.host.handler.query_dn(self.dn, hierarchy=True)
+        # Parse the Fabric/Lan Tree into native objects
+        for obj in objs:
+            if obj._class_id == 'FabricVlan':
+                self.vlans.update({obj.name: Vlan(self, obj.name, mo=obj)})
+            elif obj._class_id == 'FabricNetGroup':
+                self.vlanGroups.update({obj.name: VlanGroup(self, obj.name, mo=obj)})
+
 class VlanGroup():
-    vlans = []
-    def __init__(self, name):
+    groupVlans = []
+    def __init__(self, lan, name, mo=None):
+        self.lan = lan
         self.name = name
-        self.dn = 'fabric/lan/net-group-{}'.format(name)
-        # TODO: Init Vlans List
+        self.mo = mo
+        if not mo:
+            self.mo = self.lan.host.query('fabric/lan/net-group-{}'.format(name))
+        # Init Vlans List
+        self.groupVlans = self.lan.host.query(self.mo.dn, hierarchy=True)
 
-    def removeVlan(self, handler, id):
-        handler.query_dn(self.name)
-        handler.remove_mo()
+    def removeVlanByID(self, id):
+        for vlan in self.lan.vlans.values():
+            if vlan.mo.id == id:
+                for groupVlan in self.groupVlans:
+                    if groupVlan.name == vlan.mo.name:
+                        self.lan.host.remove(groupVlan)
 
-    @classmethod
-    def initFromObj(self, obj):
-        pass
+    def addVlanByID(self, id):
+        from ucsmsdk.mometa.fabric.FabricPooledVlan import FabricPooledVlan
+        for vlan in self.lan.vlans.values():
+            if vlan.mo.id == id:
+                tmp = FabricPooledVlan(parent_mo_or_dn=self.mo, name=vlan.name)
+                self.lan.host.add(tmp)
+
+class Vlan():
+    groups = {}
+    def __init__(self, lan, name, mo=None):
+        self.name = name
+        self.lan = lan
+        self.mo = mo
+        if not mo:
+            self.mo = self.lan.host.query('fabric/lan/net-{}'.format(name))
