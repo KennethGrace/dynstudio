@@ -64,18 +64,35 @@ class VlanGroup():
         self.groupVlans = self.lan.host.query(self.mo.dn, hierarchy=True)
 
     def removeVlanByID(self, id):
+        """ Strips the Vlan Group of all instances of the passed Vlan ID
+        """
         for vlan in self.lan.vlans.values():
             if vlan.mo.id == id:
                 for groupVlan in self.groupVlans:
                     if groupVlan.name == vlan.mo.name:
                         self.lan.host.remove(groupVlan)
 
+    def removeVlan(self, name):
+        if name in self.lan.vlans.keys():
+            t_vlan = self.lan.vlans[name]
+            for groupVlan in self.groupVlans:
+                if groupVlan.name == t_vlan.mo.name:
+                    self.lan.host.remove(groupVlan)
+
     def addVlanByID(self, id):
+        """ Appends the Vlan Group with all instances of the passed Vlan ID
+        """
         from ucsmsdk.mometa.fabric.FabricPooledVlan import FabricPooledVlan
         for vlan in self.lan.vlans.values():
             if vlan.mo.id == id:
                 tmp = FabricPooledVlan(parent_mo_or_dn=self.mo, name=vlan.name)
                 self.lan.host.add(tmp)
+
+    def addVlan(self, name):
+        from ucsmsdk.mometa.fabric.FabricPooledVlan import FabricPooledVlan
+        if name in self.lan.vlans.keys():
+            tmp = FabricPooledVlan(parent_mo_or_dn=self.mo, name=name)
+            self.lan.host.add(tmp)
 
 class Vlan():
     groups = {}
