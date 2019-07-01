@@ -10,5 +10,4 @@ class Host(ABC):
 
     @abstractmethod
     def connect(self):
-        print("Log from Host")
         pass

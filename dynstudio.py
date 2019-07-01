@@ -1,5 +1,5 @@
 #! /usr/bin/python
-import sys
+import sys, os
 import json
 
 import exception as ex
@@ -9,18 +9,13 @@ from modules.cisco import cisco_ucs
 
 VERSION = "0.0.1"
 
-min_args = 7
-
-def hand_off(key):
-    pass
+min_args = 2
 
 def main(*args, **kwargs):
-    host = cisco_ucs.CiscoUCS(args[0])
-    host.connect(*args[1:3])
-    host.lan.vlanGroups[args[3]].removeVlanByID(args[5])
-    host.lan.vlanGroups[args[4]].addVlanByID(args[5])
-    host.commit()
-    host.disconnect()
+    sys.path.append(os.getcwd())
+    mod = __import__(args[0])
+    ent = getattr(mod, 'main')
+    ent()
     pass
 
 if __name__ == '__main__':
