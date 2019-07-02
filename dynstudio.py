@@ -4,9 +4,6 @@ import json
 
 import exception as ex
 
-import host
-from modules.cisco import cisco_ucs
-
 VERSION = "0.0.1"
 
 min_args = 2

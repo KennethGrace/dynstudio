@@ -1,12 +1,12 @@
-# This python module expands on the host
-#
+# This python module expands on the host abstract class
+# CiscoUCS adds objects and methods for intent operation against a CiscoUCS Fabric
 #
 
-from host import Host
+from host import abstractHost
 
 from ucsmsdk.ucshandle import UcsHandle
 
-class CiscoUCS(Host):
+class Host(abstractHost):
     def __init__(self, name):
         super().__init__(name)
 
@@ -40,7 +40,6 @@ class Lan():
     def __init__(self, host):
         self.host = host
         self.mo = self.host.handler.query_dn('fabric/lan')
-        print(self.mo)
         self._discoverFabric()
 
     def _discoverFabric(self):

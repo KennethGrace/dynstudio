@@ -6,11 +6,11 @@ You can use DynStudio to automate dynamic workflows on multiple platforms. DynSt
 The aim of the DynStudio project is to bring the intent-based automation movement into the hands of the python developer, while integrating multi-platform support. DynStudio offers a single pane of glass for automation.
 
 ### Introduction:
-DynStudio's interface is an intent based automation module. This means tasks are intent oriented (i.e. "Create Object on host"). This is opposition to the machine orintation (i.e. "Send command to host"). For example a call to a dynstudio construct may occur thusly;
+DynStudio's interface is intent based. This means tasks are outcome oriented (i.e. "Create Object on host"). This is opposition to the task orintation (i.e. "Send command to host"). For example a call to a dynstudio construct may occur thusly;
 ```
 import dynstudio
 
-host = dynstudio.cisco_ucs.Cisco_UCS(<ip_address>)
+host = dynstudio.cisco_ucs.Cisco_UCS('192.168.0.101')
 host.connect('admin', 'Password1')
 host.addUser('newAdmin', 'newPassword1')
 ```
