@@ -8,9 +8,9 @@ The aim of the DynStudio project is to bring the intent-based automation movemen
 ### Introduction:
 DynStudio's interface is intent based. This means tasks are outcome oriented (i.e. "Create Object on host"). This is opposition to the task orintation (i.e. "Send command to host"). For example a call to a dynstudio construct may occur thusly;
 ```
-import dynstudio
+from dynstudio.host import newHost
 
-host = dynstudio.cisco_ucs.Cisco_UCS('192.168.0.101')
+host = newHost('192.168.0.101','cisco','cisco_ucs')
 host.connect('admin', 'Password1')
 host.addUser('newAdmin', 'newPassword1')
 ```
