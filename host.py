@@ -11,7 +11,7 @@ class abstractHost(ABC):
     def connect(self):
         pass
 
-def newHost(name, vendor, module):
-    mod = importlib.import_module('modules.{0}.{1}'.format(vendor, module))
+def Host(name, vendor, module):
+    mod = importlib.import_module('dynstudio.lib.{0}.{1}'.format(vendor, module))
     hostObject = getattr(mod, 'Host')
     return hostObject(name)

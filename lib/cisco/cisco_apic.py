@@ -1,7 +1,8 @@
-import requests
-from host import Host
+from dynstudio.host import abstractHost
 
-class CiscoAPIC(Host):
+import requests
+
+class Host(abstractHost):
     def __init__(self, name):
         self.name = name
 

@@ -2,7 +2,7 @@
 # CiscoUCS adds objects and methods for intent operation against a CiscoUCS Fabric
 #
 
-from host import abstractHost
+from dynstudio.host import abstractHost
 
 from ucsmsdk.ucshandle import UcsHandle
 
