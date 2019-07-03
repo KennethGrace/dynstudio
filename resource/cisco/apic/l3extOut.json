@@ -1,0 +1,17 @@
+{
+    "l3extOut": {
+        "attributes": {
+            "annotation": "",
+            "descr": "",
+            "dn": "uni/tn-{{tenant.name}}/out-{{name}}",
+            "enforceRtctrl": "export",
+            "name": "{{name}}",
+            "nameAlias": "",
+            "ownerKey": "",
+            "ownerTag": "",
+            "targetDscp": "unspecified"
+        },
+        "children": [
+        ]
+    }
+}

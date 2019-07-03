@@ -1,0 +1,10 @@
+{
+    "ospfIfPol": {
+      "attributes": {
+        "dn": "uni/tn-{{tenant.name}}/ospfIfPol-{{name}}",
+        "ctrl": "bfd",
+        "nwT": "p2p"
+      },
+      "children": []
+    }
+  }

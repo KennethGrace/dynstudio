@@ -1,0 +1,11 @@
+{
+  "fvCtx": {
+    "attributes": {
+      "dn": "uni/tn-{{tenant.name}}/ctx-{{name}}",
+      "name": "{{name}}",
+      "rn": "ctx-{{name}}",
+      "status": "created"
+    },
+    "children": []
+  }
+}
