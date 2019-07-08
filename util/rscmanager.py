@@ -8,7 +8,7 @@ from jinja2 import Environment, BaseLoader, Template
 
 import json
 
-rsc_dir = r'resource'
+rsc_dir = r'../resource'
 
 def fetch(resource_name, **kwargs):
     d = os.path.dirname(__file__)
