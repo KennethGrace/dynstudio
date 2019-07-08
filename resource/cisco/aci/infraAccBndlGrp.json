@@ -1,0 +1,16 @@
+{
+    "infraAccBndlGrp": {
+        "attributes": {
+            "annotation": "",
+            "descr": "",
+            "dn": "uni/infra/funcprof/accbundle-{{name}}",
+            "lagT": "link",
+            "name": "{{name}}",
+            "nameAlias": "",
+            "ownerKey": "",
+            "ownerTag": ""
+        },
+        "children": [
+        ]
+    }
+}

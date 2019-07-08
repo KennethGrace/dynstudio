@@ -10,6 +10,16 @@ import json
 
 rsc_dir = r'../resource'
 
+def grab(resource_name):
+    o = None
+    d = os.path.dirname(__file__)
+    r = open(d+'/'+rsc_dir+'/'+resource_name)
+    i = r.read()
+    r.close()
+    if resource_name.endswith('.json'):
+        o = json.loads(i)
+    return o
+
 def fetch(resource_name, **kwargs):
     d = os.path.dirname(__file__)
     r = open(d+'/'+rsc_dir+'/'+resource_name)

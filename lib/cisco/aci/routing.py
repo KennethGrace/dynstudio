@@ -1,4 +1,4 @@
-
+from __future__ import unicode_literals
 from dynstudio.util.rscmanager import fetch, render
 
 class l3extOut():
@@ -6,11 +6,11 @@ class l3extOut():
     ACI Layer 3 Exstention Out
     """
     rn_url = r'out-{{name}}/'
-    def __init__(self, tenant, name):
+    def __init__(self, parent, name):
         self.name = name
-        self.tenant = tenant
-        self.rn_url = render(self.rn_url,name=name)
-        self.url = tenant.url + self.rn_url
+        self.parent = parent
+        self.rn_url = render(self.rn_url, name=name)
+        self.url = parent.url + self.rn_url
         pass
 
 class fvCtx():
@@ -20,11 +20,20 @@ class fvCtx():
     of a VRF object within ACI
     """
     rn_url = r'ctx-{{name}}/'
-    def __init__(self, tenant, name):
+    def __init__(self, parent, name):
         self.name = name
-        self.tenant = tenant
+        self.parent = parent
         self.rn_url = render(self.rn_url,name=name)
-        self.url = tenant.url + self.rn_url
+        self.url = parent.url + self.rn_url
+
+
+
+
+#########################
+###                   ###
+###  Special Objects  ###
+###                   ###
+#########################
 
 class ospfIfPol():
     """
@@ -34,9 +43,9 @@ class ospfIfPol():
     in other tenants.
     """
     rn_url = r'ospfIfPol-{{name}}/'
-    def __init__(self, tenant, name):
+    def __init__(self, parent, name):
         self.name = name
-        self.tenant = tenant
+        self.parent = parent
         self.rn_url = render(self.rn_url,name=name)
-        self.url = tenant.url + self.rn_url
+        self.url = parent.url + self.rn_url
 
