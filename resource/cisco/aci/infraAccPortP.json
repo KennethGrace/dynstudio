@@ -1,0 +1,14 @@
+{
+    "infraAccPortP": {
+        "attributes": {
+            "annotation": "",
+            "descr": "{{description}}",
+            "dn": "uni/infra/accportprof-{{name}}",
+            "name": "{{name}}",
+            "nameAlias": "",
+            "ownerKey": "",
+            "ownerTag": ""
+        },
+        "children": []
+    }
+}

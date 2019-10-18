@@ -1,0 +1,12 @@
+{
+    "infraHPortS": {
+        "attributes": {
+            "dn": "uni/infra/accportprof-{{parent.name}}/hports-{{name}}-typ-range",
+            "name": "{{name}}",
+            "descr": "{{description}}",
+            "rn": "hports-{{name}}-typ-range",
+            "status": "created,modified"
+        },
+        "children": []
+    }
+}

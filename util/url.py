@@ -13,6 +13,6 @@ def post(url, payload, json=False):
         r = requests.post(url, headers=headers, data=payload, verify=False, cookies=jar)
     return r
 
-def get(url, payload=None, json=False):
-    r = requests.get(url, headers=headers, verify=False, cookies=jar)
+def get(url, params=None, json=False):
+    r = requests.get(url, params=params, headers=headers, verify=False, cookies=jar)
     return r

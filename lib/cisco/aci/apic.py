@@ -13,15 +13,18 @@ import json
 
 class Host(abstractHost):
     """
-    ACI Virtual Routing and Forwarding Object
+    The Host Object for DynStudio ACI Implementation.
+    Ties to a real Cisco Application Policy Infastructure Controller (APIC).
+    Attributes and methods of this class relate to changes in the
+    Management Plane of the APIC.
     """
-    url = r'https://{{name}}/api/'
+    url = 'https://{0}/api/'
     tenants = {}
     def __init__(self, name):
         self.name = name
         self.url = render(self.url,name=name)
         print(self.url)
-        self.fabric = Fabric(self)
+        self.fabric = switching.Fabric(self)
 
     def connect(self, user, pswd):
         """
@@ -48,20 +51,3 @@ class Host(abstractHost):
 
     def disconnect(self):
         pass
-
-class Fabric():
-    rn_url = r'node/mo/uni/infra/funcprof/'
-    portChannels = {}
-    def __init__(self, parent):
-        self.parent = parent
-        self.url = parent.url + self.rn_url
-
-    def createPortChannel(self, name, vpc=False):
-        obj = switching.infraAccBndlGrp(self, name)
-        self.portChannels.update({name: obj})
-        pyld = fetch('cisco/aci/infraAccBndlGrp.json', name=name)
-        if vpc:
-            pyld['infraAccBndlGrp']['attributes']['lagT'] = 'node'
-        t_url = self.url + 'accbundle-{}.json'.format(name)
-        r = url.post(t_url, pyld, json=True)
-        return obj, r
